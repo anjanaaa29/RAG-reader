@@ -9,7 +9,7 @@ langchain
 langchain-community
 langchain-core
 langchain-groq
-langchain_huggingface
+langchain-huggingface
 sentence-transformers
 
 # Embeddings & Vector DB
@@ -25,5 +25,5 @@ streamlit
 streamlit-chat
 requests
 
-# Optional (if you use Jupyter for testing)
+# Optional (for Jupyter testing)
 notebook
