@@ -1,0 +1,27 @@
+# Backend
+fastapi
+uvicorn
+pydantic
+python-dotenv
+
+# LangChain & LLMs
+langchain
+langchain-community
+langchain-core
+langchain-groq
+langchain_huggingface
+
+# Embeddings & Vector DB
+faiss-cpu
+
+# PDF/Text processing
+pypdf
+python-docx
+
+# Frontend
+streamlit
+streamlit-chat
+requests
+
+# Optional (if you use Jupyter for testing)
+notebook
