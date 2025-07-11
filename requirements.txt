@@ -10,6 +10,7 @@ langchain-community
 langchain-core
 langchain-groq
 langchain_huggingface
+sentence-transformers
 
 # Embeddings & Vector DB
 faiss-cpu
@@ -17,6 +18,7 @@ faiss-cpu
 # PDF/Text processing
 pypdf
 python-docx
+pymupdf
 
 # Frontend
 streamlit
