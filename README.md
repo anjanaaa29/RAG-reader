@@ -33,5 +33,5 @@ A **Retrieval-Augmented Generation (RAG) Chatbot** using **LangChain**, **Groq (
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/RAG-ChatBot.git
+git clone https://github.com/anjanaaa29/RAG-ChatBot.git
 cd RAG-ChatBot
