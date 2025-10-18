@@ -1,15 +1,15 @@
 from typing import List, Dict, Any, Optional
 
 from src.config import GenericConfig
-from langchain.chains import RetrievalQA
-from langchain.chains.combine_documents.base import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate
+from langchain.chains import RetrievalQA
+from langchain.chains.combine_documents.base import BaseCombineDocumentsChain, create_stuff_documents_chain
 from langchain_groq import ChatGroq
 
 
 class RetrievalChain:
     """
-    RetrievalChain encapsulates a retrieval-augmented generation pipeline
+    RetrievalChain encapsulates a retrieval-augmented generation (RAG) pipeline
     using Groq LLM + LangChain + vectorstore retriever.
     """
 
@@ -110,7 +110,13 @@ Required response format:
         if hasattr(retriever, 'search_kwargs'):
             retriever.search_kwargs["k"] = max_docs
 
-        # Create the RetrievalQA chain
+        # Create the document chain
+        document_chain: BaseCombineDocumentsChain = create_stuff_documents_chain(
+            llm=self.llm,
+            prompt=prompt.partial(disclaimer=disclaimer)
+        )
+
+        # Build the RetrievalQA chain
         retrieval_chain = RetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type="stuff",
@@ -141,10 +147,8 @@ Required response format:
                 "content_excerpt": doc.page_content[:content_excerpt_length] +
                                    ("..." if len(doc.page_content) > content_excerpt_length else "")
             }
-
             for field in fields_to_extract:
                 source_info[field] = doc.metadata.get(field, "")
-
             sources.append(source_info)
 
         output = {
