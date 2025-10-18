@@ -2,7 +2,7 @@ from langchain_community.vectorstores import FAISS
 # from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from typing import List, Optional, Dict, Any
-from langchain.schema import Document
+from langchain_core.documents import Document
 import os
 import pickle
 
