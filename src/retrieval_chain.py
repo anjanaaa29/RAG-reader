@@ -1,10 +1,12 @@
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.prompts import ChatPromptTemplate
+from typing import List, Dict, Any, Optional
 
+from langchain.chains import RetrievalQA
+from langchain.chains.combine_documents.base import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 
 from src.config import GenericConfig
+
 
 class RetrievalChain:
     """
@@ -65,7 +67,6 @@ class RetrievalChain:
             "Consult appropriate professionals for specific advice."
         )
 
-        # Prepare the rules and format text outside of f-string to avoid syntax errors
         rules_list = response_rules or default_rules
         format_list = response_format or default_format
 
@@ -74,21 +75,21 @@ class RetrievalChain:
 
         self.base_prompt = ChatPromptTemplate.from_template(
             f"""
-            You are a {domain} specialist providing accurate information.
-            Provide evidence-based responses following these rules:
+You are a {domain} specialist providing accurate information.
+Provide evidence-based responses following these rules:
 
-            {rules_text}
+{rules_text}
 
-            Context:
-            {{context}}
+Context:
+{{context}}
 
-            Question: {{input}}
+Question: {{input}}
 
-            Required response format:
-            {format_text}
+Required response format:
+{format_text}
 
-            {{disclaimer}}
-            """
+{{disclaimer}}
+"""
         )
 
         self.disclaimer = disclaimer or default_disclaimer
@@ -99,9 +100,9 @@ class RetrievalChain:
         max_docs: int = 7,
         custom_prompt: Optional[ChatPromptTemplate] = None,
         custom_disclaimer: Optional[str] = None
-    ):
+    ) -> RetrievalQA:
         """
-        Create a LangChain retrieval chain.
+        Create a LangChain RetrievalQA chain using the modular API.
         """
         prompt = custom_prompt or self.base_prompt
         disclaimer = custom_disclaimer or self.disclaimer
@@ -109,15 +110,21 @@ class RetrievalChain:
         if hasattr(retriever, 'search_kwargs'):
             retriever.search_kwargs["k"] = max_docs
 
+        # Create a document chain
         document_chain = create_stuff_documents_chain(
-            self.llm,
-            prompt.partial(disclaimer=disclaimer)
+            llm=self.llm,
+            prompt=prompt.partial(disclaimer=disclaimer)
         )
 
-        return create_retrieval_chain(
+        # Create RetrievalQA chain
+        retrieval_chain = RetrievalQA.from_chain_type(
+            llm=self.llm,
+            chain_type="stuff",
             retriever=retriever,
-            combine_docs_chain=document_chain
+            chain_type_kwargs={"prompt": prompt.partial(disclaimer=disclaimer)}
         )
+
+        return retrieval_chain
 
     def format_response(
         self,
