@@ -1,7 +1,7 @@
 import os
 import json
 from typing import List, Dict, Union
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_community.document_loaders import (
     PyPDFLoader,
     UnstructuredWordDocumentLoader,
