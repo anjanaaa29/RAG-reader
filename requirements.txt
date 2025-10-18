@@ -5,9 +5,10 @@ pydantic
 python-dotenv
 
 # LangChain & LLMs
-langchain
-langchain-community
-langchain-core
+
+langchain==0.1.17
+langchain-community==0.0.37
+langchain-core==0.1.45
 langchain-groq
 langchain-huggingface
 sentence-transformers
