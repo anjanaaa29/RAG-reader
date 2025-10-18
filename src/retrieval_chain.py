@@ -1,11 +1,10 @@
 from typing import List, Dict, Any, Optional
 
-from langchain.chains import RetrievalQA
-from langchain.chains.combine_documents.base import create_stuff_documents_chain
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
-
 from src.config import GenericConfig
+from langchain.chains import RetrievalQA  # only if using RetrievalQA chain from new modular API
+from langchain.chains.combine_documents.base import create_stuff_documents_chain
+from langchain.prompts import ChatPromptTemplate
+from langchain_groq import ChatGroq
 
 
 class RetrievalChain:
