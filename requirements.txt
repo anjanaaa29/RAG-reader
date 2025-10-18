@@ -4,7 +4,7 @@ uvicorn
 pydantic
 python-dotenv
 
-# LangChain & LLMs (modular)
+# LangChain (modular API compatible)
 langchain>=0.3.7
 langchain-core>=0.3.7
 langchain-community>=0.3.2
@@ -24,5 +24,5 @@ streamlit
 streamlit-chat
 requests
 
-# Optional (for Jupyter/testing)
+# Optional
 notebook
