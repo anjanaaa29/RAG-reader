@@ -5,12 +5,12 @@ pydantic
 python-dotenv
 
 # LangChain & LLMs
-langchain
-langchain-community
-langchain-core
 langchain-groq
 langchain-huggingface
 sentence-transformers
+langchain==0.0.340
+langchain-core==0.0.340
+langchain-community==0.0.340
 
 # Embeddings & Vector DB
 faiss-cpu
