@@ -4,12 +4,13 @@ uvicorn
 pydantic
 python-dotenv
 
-# LangChain & LLMs (modular)
+# LangChain & LLMs (modular API)
 langchain>=0.3.7
 langchain-core>=0.3.7
 langchain-community>=0.3.2
 langchain-text-splitters>=0.3.0
 langchain-groq>=0.1.3
+sentence-transformers
 
 # Embeddings & Vector DB
 faiss-cpu
@@ -26,3 +27,6 @@ requests
 
 # Optional (for Jupyter/testing)
 notebook
+
+# Additional fixes for modern Python versions
+typing-extensions
