@@ -8,9 +8,9 @@ python-dotenv
 langchain-groq
 langchain-huggingface
 sentence-transformers
-langchain
-langchain-core
-langchain-community
+langchain==0.0.340
+langchain-core==0.0.340
+langchain-community==0.0.340
 
 # Embeddings & Vector DB
 faiss-cpu
