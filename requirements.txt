@@ -6,9 +6,9 @@ python-dotenv
 
 # LangChain & LLMs
 
-langchain
-langchain-community
-langchain-core
+langchain==0.1.16
+langchain-core==0.1.52
+langchain-community==0.0.29
 langchain-groq
 langchain-huggingface
 sentence-transformers
