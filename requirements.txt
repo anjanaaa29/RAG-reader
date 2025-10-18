@@ -4,11 +4,8 @@ uvicorn
 pydantic
 python-dotenv
 
-# LangChain (modular API compatible)
+# LangChain & LLMs (modular)
 langchain>=0.3.7
-langchain-core>=0.3.7
-langchain-community>=0.3.2
-langchain-text-splitters>=0.3.0
 langchain-groq>=0.1.3
 
 # Embeddings & Vector DB
@@ -24,5 +21,5 @@ streamlit
 streamlit-chat
 requests
 
-# Optional
+# Optional (for Jupyter/testing)
 notebook
