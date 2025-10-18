@@ -94,32 +94,31 @@ Required response format:
         self.disclaimer = disclaimer or default_disclaimer
 
     def create_retrieval_chain(
-    self,
-    retriever,
-    max_docs: int = 7,
-    custom_prompt: Optional[ChatPromptTemplate] = None,
-    custom_disclaimer: Optional[str] = None
-) -> RetrievalQA:
-    """
-    Create a LangChain RetrievalQA chain using the modular API.
-    """
-    prompt = custom_prompt or self.base_prompt
-    disclaimer = custom_disclaimer or self.disclaimer
+        self,
+        retriever,
+        max_docs: int = 7,
+        custom_prompt: Optional[ChatPromptTemplate] = None,
+        custom_disclaimer: Optional[str] = None
+    ) -> RetrievalQA:
+        """
+        Create a LangChain RetrievalQA chain using the modular API.
+        """
+        prompt = custom_prompt or self.base_prompt
+        disclaimer = custom_disclaimer or self.disclaimer
 
-    # Limit documents retrieved
-    if hasattr(retriever, 'search_kwargs'):
-        retriever.search_kwargs["k"] = max_docs
+        # Limit documents retrieved
+        if hasattr(retriever, 'search_kwargs'):
+            retriever.search_kwargs["k"] = max_docs
 
-    # Create the RetrievalQA chain
-    retrieval_chain = RetrievalQA.from_chain_type(
-        llm=self.llm,
-        chain_type="stuff",
-        retriever=retriever,
-        chain_type_kwargs={"prompt": prompt.partial(disclaimer=disclaimer)}
-    )
+        # Create the RetrievalQA chain
+        retrieval_chain = RetrievalQA.from_chain_type(
+            llm=self.llm,
+            chain_type="stuff",
+            retriever=retriever,
+            chain_type_kwargs={"prompt": prompt.partial(disclaimer=disclaimer)}
+        )
 
-    return retrieval_chain
-
+        return retrieval_chain
 
     def format_response(
         self,
