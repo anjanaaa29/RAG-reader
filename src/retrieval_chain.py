@@ -1,10 +1,10 @@
-from langchain.chains import create_retrieval_chain
+from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
-from typing import List, Dict, Any, Optional
-from src.config import GenericConfig
 
+from langchain_groq import ChatGroq
+
+from src.config import GenericConfig
 
 class RetrievalChain:
     """
