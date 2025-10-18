@@ -1,15 +1,14 @@
-from typing import List, Dict, Any, Optional
-
-from src.config import GenericConfig
-from langchain.prompts.chat import ChatPromptTemplate
-from langchain.chains import RetrievalQA
-from langchain.chains.combine_documents.base import BaseCombineDocumentsChain, create_stuff_documents_chain
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
+from typing import List, Dict, Any, Optional
+from src.config import GenericConfig
 
 
 class RetrievalChain:
     """
-    RetrievalChain encapsulates a retrieval-augmented generation (RAG) pipeline
+    RetrievalChain encapsulates a retrieval-augmented generation pipeline
     using Groq LLM + LangChain + vectorstore retriever.
     """
 
@@ -24,6 +23,9 @@ class RetrievalChain:
 
         self.model_name = llm_model or GenericConfig.LLM_MODEL
         self.temperature = temperature if temperature is not None else GenericConfig.LLM_TEMPERATURE
+
+        # print("DEBUG: Groq model being used:", self.model_name)
+        # print("DEBUG: GROQ_API_KEY loaded:", bool(GenericConfig.GROQ_API_KEY))
 
         self.llm = ChatGroq(
             temperature=self.temperature,
@@ -66,6 +68,7 @@ class RetrievalChain:
             "Consult appropriate professionals for specific advice."
         )
 
+        # Prepare the rules and format text outside of f-string to avoid syntax errors
         rules_list = response_rules or default_rules
         format_list = response_format or default_format
 
@@ -74,21 +77,21 @@ class RetrievalChain:
 
         self.base_prompt = ChatPromptTemplate.from_template(
             f"""
-You are a {domain} specialist providing accurate information.
-Provide evidence-based responses following these rules:
+            You are a {domain} specialist providing accurate information.
+            Provide evidence-based responses following these rules:
 
-{rules_text}
+            {rules_text}
 
-Context:
-{{context}}
+            Context:
+            {{context}}
 
-Question: {{input}}
+            Question: {{input}}
 
-Required response format:
-{format_text}
+            Required response format:
+            {format_text}
 
-{{disclaimer}}
-"""
+            {{disclaimer}}
+            """
         )
 
         self.disclaimer = disclaimer or default_disclaimer
@@ -99,32 +102,25 @@ Required response format:
         max_docs: int = 7,
         custom_prompt: Optional[ChatPromptTemplate] = None,
         custom_disclaimer: Optional[str] = None
-    ) -> RetrievalQA:
+    ):
         """
-        Create a LangChain RetrievalQA chain using the modular API.
+        Create a LangChain retrieval chain.
         """
         prompt = custom_prompt or self.base_prompt
         disclaimer = custom_disclaimer or self.disclaimer
 
-        # Limit documents retrieved
         if hasattr(retriever, 'search_kwargs'):
             retriever.search_kwargs["k"] = max_docs
 
-        # Create the document chain
-        document_chain: BaseCombineDocumentsChain = create_stuff_documents_chain(
-            llm=self.llm,
-            prompt=prompt.partial(disclaimer=disclaimer)
+        document_chain = create_stuff_documents_chain(
+            self.llm,
+            prompt.partial(disclaimer=disclaimer)
         )
 
-        # Build the RetrievalQA chain
-        retrieval_chain = RetrievalQA.from_chain_type(
-            llm=self.llm,
-            chain_type="stuff",
+        return create_retrieval_chain(
             retriever=retriever,
-            chain_type_kwargs={"prompt": prompt.partial(disclaimer=disclaimer)}
+            combine_docs_chain=document_chain
         )
-
-        return retrieval_chain
 
     def format_response(
         self,
@@ -147,8 +143,10 @@ Required response format:
                 "content_excerpt": doc.page_content[:content_excerpt_length] +
                                    ("..." if len(doc.page_content) > content_excerpt_length else "")
             }
+
             for field in fields_to_extract:
                 source_info[field] = doc.metadata.get(field, "")
+
             sources.append(source_info)
 
         output = {
@@ -193,3 +191,11 @@ Required response format:
             search_type=search_type,
             search_kwargs=search_kwargs
         )
+# if __name__ == "__main__":
+#     from config import GenericConfig
+
+#     print("\n=== Testing RetrievalChain Initialization ===")
+#     rc = RetrievalChain()
+#     print("✅ Model loaded:", rc.model_name)
+#     print("✅ Temperature:", rc.temperature)
+
