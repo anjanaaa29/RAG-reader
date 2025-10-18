@@ -1,29 +1,15 @@
-# Backend
+streamlit
+python-dotenv
 fastapi
 uvicorn
 pydantic
-python-dotenv
-
-# LangChain & LLMs
-langchain
-langchain-community
-langchain-core
+langchain==0.0.340
+langchain-community==0.0.340
+langchain-core==0.0.340
 langchain-groq
-langchain-huggingface
 sentence-transformers
-
-# Embeddings & Vector DB
 faiss-cpu
-
-# PDF/Text processing
-pypdf
-python-docx
 pymupdf
-
-# Frontend
-streamlit
-streamlit-chat
+python-docx
+pypdf
 requests
-
-# Optional (for Jupyter testing)
-notebook
