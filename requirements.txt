@@ -4,13 +4,13 @@ uvicorn
 pydantic
 python-dotenv
 
-# LangChain & LLMs
-langchain-groq
-langchain-huggingface
+# LangChain & LLMs (modular)
+langchain>=0.3.7
+langchain-core>=0.3.7
+langchain-community>=0.3.2
+langchain-text-splitters>=0.3.0
+langchain-groq>=0.1.3
 sentence-transformers
-langchain==0.0.340
-langchain-core==0.0.340
-langchain-community==0.0.340
 
 # Embeddings & Vector DB
 faiss-cpu
@@ -25,3 +25,5 @@ streamlit
 streamlit-chat
 requests
 
+# Optional (for Jupyter/testing)
+notebook
