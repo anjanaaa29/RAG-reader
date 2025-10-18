@@ -1,7 +1,7 @@
 from typing import List, Dict, Any, Optional
 
 from src.config import GenericConfig
-from langchain.chains import RetrievalQA  # only if using RetrievalQA chain from new modular API
+from langchain.chains import RetrievalQA
 from langchain.chains.combine_documents.base import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
@@ -109,13 +109,7 @@ Required response format:
         if hasattr(retriever, 'search_kwargs'):
             retriever.search_kwargs["k"] = max_docs
 
-        # Create a document chain
-        document_chain = create_stuff_documents_chain(
-            llm=self.llm,
-            prompt=prompt.partial(disclaimer=disclaimer)
-        )
-
-        # Create RetrievalQA chain
+        # Create a RetrievalQA chain
         retrieval_chain = RetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type="stuff",
