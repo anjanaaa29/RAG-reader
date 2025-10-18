@@ -6,7 +6,7 @@ python-dotenv
 
 # LangChain & LLMs
 
-langchain==0.1.16
+langchain==0.3.26
 langchain-core==0.1.52
 langchain-community==0.0.29
 langchain-groq==0.0.5
