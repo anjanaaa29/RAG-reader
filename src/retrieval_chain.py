@@ -1,7 +1,7 @@
 from typing import List, Dict, Any, Optional
 
 from src.config import GenericConfig
-from langchain.prompts import ChatPromptTemplate
+from langchain.prompts.chat import ChatPromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.chains.combine_documents.base import BaseCombineDocumentsChain, create_stuff_documents_chain
 from langchain_groq import ChatGroq
